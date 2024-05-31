@@ -24,6 +24,22 @@ exports.connect = async () => {
     auth: state,
     browser: ["Ubuntu", "Chrome", "20.0.04"],
     markOnlineOnConnect: true,
+    patchMessageBeforeSending: (message) => {
+      const requiresPatch = !!(message.buttonsMessage || message.listMessage || message.interactiveMessage);
+      if (requiresPatch) {
+        message = {
+          viewOnceMessage: {
+            message: {
+              messageContextInfo: {
+                deviceListMetadataVersion: 2,
+                deviceListMetadata: {},
+              }, ...message
+            }
+          }
+        }
+      }
+      return message;
+    }
   });
 
   if (!socket.authState.creds.registered) {

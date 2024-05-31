@@ -47,12 +47,14 @@ exports.extractDataFromMessage = (webMessage) => {
   const extendedTextMessageText = extendedTextMessage?.text;
   const imageTextMessage = webMessage.message?.imageMessage?.caption;
   const videoTextMessage = webMessage.message?.videoMessage?.caption;
+  const templateReply = webMessage.message?.templateButtonReplyMessage?.selectedId
+  const buttonResponse = webMessage.message?.buttonsResponseMessage?.selectedButtonId
 
   const fullMessage =
     textMessage ||
     extendedTextMessageText ||
     imageTextMessage ||
-    videoTextMessage;
+    videoTextMessage || templateReply || buttonResponse;
 
   if (!fullMessage) {
     return {
